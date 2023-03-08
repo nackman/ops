@@ -44,8 +44,8 @@ CONF=$(../env.sh)
 
 conf=$CONF/chasquid
 rm -rf /etc/chasquid
+mkdir -p $conf
 ln -s $conf /etc/chasquid
-chown -R chasquid $conf
 
 cert=$conf/certs/$HOST
 mkdir -p $cert
@@ -53,6 +53,8 @@ cd $cert
 if [ ! -f "dkim_privkey.pem" ]; then
   dkimsign
 fi
+
+chown -R chasquid $conf
 
 cd $DIR
 
