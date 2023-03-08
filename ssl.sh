@@ -3,12 +3,21 @@
 DIR=$(dirname $(realpath "$0"))
 cd $DIR
 
-if [ ! -f "conf.sh" ]; then
-  echo -e "cp conf.example.sh conf.sh\nthen edit it"
+CONF=$(./env.sh)
+
+conf=$CONF/conf.sh
+
+if [ ! -f "$conf" ]; then
+  cp conf.example.sh $conf
+fi
+
+source $conf
+
+if [[ -z $DNS ]]; then
+  echo -e "please edit $conf"
   exit 1
 fi
 
-source conf.sh
 if [ -v 1 ]; then
   HOST=$1
 else
@@ -27,9 +36,13 @@ if [ ! -x "$acme" ]; then
   $acme --upgrade --auto-upgrade
 fi
 
-reload="$DIR/reload/$HOST.sh"
+mkdir -p $CONF/reload
 
-cp $DIR/.reload.sh $reload
+reload="$CONF/reload/$HOST.sh"
+
+if [ ! -f "$reload" ]; then
+  cp $DIR/.reload.sh $reload
+fi
 
 gen() {
   if [ -f "$HOME/.acme.sh/$HOST_ecc/fullchain.cer" ]; then
