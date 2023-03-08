@@ -3,6 +3,12 @@
 DIR=$(dirname $(realpath "$0"))
 cd $DIR
 
+if [ ! -f "conf.sh" ]; then
+  echo -e "cp conf.example.sh conf.sh\nthen edit it"
+  exit 1
+fi
+
+source conf.sh
 if [ -v 1 ]; then
   HOST=$1
 else
@@ -17,8 +23,7 @@ export HOME=/mnt/www
 acme=$HOME/.acme.sh/acme.sh
 
 if [ ! -x "$acme" ]; then
-  export ACME_GIT=usrtax/acme.sh
-  curl https://ghproxy.com/https://raw.githubusercontent.com/usrtax/get.acme.sh/master/index.html | sh -s email=$EMAIL
+  curl https://ghproxy.com/https://raw.githubusercontent.com/usrtax/get.acme.sh/master/index.html | sh -s email=$MAIL
   $acme --upgrade --auto-upgrade
 fi
 
