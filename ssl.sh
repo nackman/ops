@@ -12,7 +12,7 @@ source conf.sh
 if [ -v 1 ]; then
   HOST=$1
 else
-  echo "USAGE : $0 xxx.xxx"
+  echo "USAGE : $0 example.com"
   exit 1
 fi
 
@@ -31,11 +31,16 @@ reload="$DIR/reload/$HOST.sh"
 
 cp $DIR/.reload.sh $reload
 
-if [ -f "$HOME/.acme.sh/$HOST/fullchain.cer" ]; then
-  echo "update $HOST"
-  $acme --force --renew -d $HOST -d *.$HOST --log --reloadcmd "$reload"
-else
-  echo "refresh $HOST"
-  $acme \
-    --days 30 --issue --dns dns_$DNS -d $HOST -d *.$HOST --force --log --reloadcmd "$reload"
-fi
+gen() {
+  if [ -f "$HOME/.acme.sh/$HOST_ecc/fullchain.cer" ]; then
+    echo "update $HOST"
+    $acme --force --renew -d $HOST -d *.$HOST --log --reloadcmd "$reload"
+  else
+    echo "refresh $HOST"
+    $acme \
+      --days 30 --issue --dns dns_$DNS -d $HOST -d *.$HOST \
+      --force --log --reloadcmd "$reload"
+  fi
+}
+
+gen || gen
