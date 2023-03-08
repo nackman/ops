@@ -56,9 +56,16 @@ if [ ! -f "$private" ]; then
   mv private.pem $private
 fi
 
-chown -R chasquid $conf
+link() {
+  if [ ! -e "$1" ]; then
+    ln -s /mnt/www/.acme.sh/${HOST}_ecc/$1 ${2:-"$1"}
+  fi
+}
+link fullchain.cer
+link $HOST.key privkey.pem
 
 cd $DIR
+chown -R chasquid $conf
 
 systemctl enable chasquid --now
 systemctl restart chasquid
