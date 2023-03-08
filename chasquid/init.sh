@@ -50,8 +50,10 @@ ln -s $conf /etc/chasquid
 cert=$conf/certs/$HOST
 mkdir -p $cert
 cd $cert
-if [ ! -f "dkim_privkey.pem" ]; then
-  dkimsign
+private=dkim_privkey.pem
+if [ ! -f "$private" ]; then
+  dkimkeygen
+  mv private.pem $private
 fi
 
 chown -R chasquid $conf

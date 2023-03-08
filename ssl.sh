@@ -56,7 +56,7 @@ gen() {
     time_diff=$((current_time - file_modified_time))
     # 如果时间差小于一天的秒数，则文件在一天内被修改过
     if [ "$time_diff" -lt 86400 ]; then
-      echo "updated today"
+      echo "$fullchain updated today"
     else
       $acme --force --renew -d $HOST -d *.$HOST --log --reloadcmd "$reload"
     fi
