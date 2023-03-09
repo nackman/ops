@@ -27,3 +27,4 @@ mail = {
 }
 
 console.log await transporter.sendMail(mail)
+console.log subject
