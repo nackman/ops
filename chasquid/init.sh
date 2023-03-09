@@ -83,6 +83,7 @@ else
 fi
 
 rsync --ignore-existing -av $DIR/conf/ $conf
+rsync --ignore-existing -av $DIR/domains/ $conf/domains/$HOST
 chown -R $user:$user $conf
 
 mkdir -p /var/lib/chasquid
@@ -90,7 +91,7 @@ chown $user:$user /var/lib/chasquid
 
 systemctl enable chasquid --now
 systemctl restart chasquid
-systemctl status chasquid
+systemctl status chasquid --no-pager
 
 set +x
 green() {
