@@ -91,6 +91,5 @@ green() {
   echo -e "\033[32m$1\033[0m"
 }
 echo -e "Setting up DKIM → ADD DNS TXT : $(green $dkim._domainkey.$HOST)"
-
 cat $cert/dns.txt
 echo ''
