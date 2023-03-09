@@ -8,13 +8,13 @@ CONF=$(./env.sh)
 conf=$CONF/conf.sh
 
 if [ ! -f "$conf" ]; then
-  cp conf.example.sh $conf
+  cp .conf.sh $conf
 fi
 
 source $conf
 
-if [[ -z $DNS ]]; then
-  echo -e "please edit $conf"
+if [ ! $DNS ]; then
+  echo -e "\nPLEASE EDIT :\n$conf\n"
   exit 1
 fi
 
