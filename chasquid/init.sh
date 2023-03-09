@@ -29,8 +29,9 @@ if ! [ -x "$(command -v setfacl)" ]; then
   apt-get install -y acl
 fi
 
-user=chasquid
+user=mail
 id -u $user || useradd -s /bin/false $user
+getent group $user >/dev/null || groupadd $user
 
 setfacl -R -m u:$user:rX /mnt/www/.acme.sh
 
