@@ -8,7 +8,7 @@ CONF=$(./env.sh)
 conf=$CONF/conf.sh
 
 if [ ! -f "$conf" ]; then
-  cp conf.example.sh $conf
+  cp .conf.sh $conf
 fi
 
 source $conf
