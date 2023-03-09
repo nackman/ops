@@ -16,21 +16,24 @@ fi
 ../ssl.sh $HOST
 
 if ! [ -x "$(command -v chasquid)" ]; then
+  rm -rf /etc/chasquid /etc/systemd/system/chasquid* /tmp/chasquid
   cd /tmp
-  rm -rf chasquid
   git clone https://blitiri.com.ar/repos/chasquid
   cd chasquid
   make
   make install-binaries
   make install-config-skeleton
+  systemctl daemon-reload
+  cd $DIR
 fi
 
 if ! [ -x "$(command -v setfacl)" ]; then
   apt-get install -y acl
 fi
 
-user=chasquid
+user=mail
 id -u $user || useradd -s /bin/false $user
+getent group $user >/dev/null || groupadd $user
 
 setfacl -R -m u:$user:rX /mnt/www/.acme.sh
 
@@ -57,12 +60,11 @@ if [ ! -f "$private" ]; then
 fi
 
 link() {
-  fp=${2:-"$1"}
-  if [ ! -e "$fp" ]; then
-    ln -s /mnt/www/.acme.sh/${HOST}_ecc/$1 $fp
+  if [ ! -e "$2" ]; then
+    ln -s /mnt/www/.acme.sh/${HOST}_ecc/$1 $2
   fi
 }
-link fullchain.cer
+link fullchain.cer fullchain.pem
 link $HOST.key privkey.pem
 cd ../..
 d=domains/$HOST
@@ -80,16 +82,22 @@ else
   dkim=$(cat dkim_selector)
 fi
 
-chown -R chasquid $conf
-
 rsync --ignore-existing -av $DIR/conf/ $conf
+rsync --ignore-existing -av $DIR/domains/ $conf/domains/$HOST
+chown -R $user:$user $conf
+
+mkdir -p /var/lib/chasquid
+chown $user:$user /var/lib/chasquid
+
 systemctl enable chasquid --now
 systemctl restart chasquid
+systemctl status chasquid --no-pager
 
 set +x
 green() {
   echo -e "\033[32m$1\033[0m"
 }
-echo -e "Setting up DKIM → ADD DNS TXT : $(green $dkim._domainkey.$HOST)"
+
+echo -e "\nDKIM → Please Add DNS TXT : $(green $dkim._domainkey.$HOST)\n"
 cat $cert/dns.txt
 echo ''
