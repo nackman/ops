@@ -2,6 +2,8 @@
 
 > nodemailer
 
+{user,to,pass,subject} = process.env
+
 transporter = nodemailer.createTransport({
     host: 'smtp.user.tax'
     debug: true
@@ -9,17 +11,19 @@ transporter = nodemailer.createTransport({
     secure: true
     port: 465
     auth: {
-      user: 'i@user.tax'
-      pass: process.env.password
+      user
+      pass
     }
 })
 
+subject = subject or "⭐ test mail from #{user} #{new Date().toISOString().slice(0,19).replace('T',' ')}"
+
 mail = {
-    from: 'i@user.tax'
-    to: 'iuser.link@gmail.com'
-    subject: 'Hello ✔'+new Date
-    text: 'text Hello world?'
-    html: '<b>html Hello world?</b><h1>'+new Date+'</h1>'
+    from: user
+    to
+    subject
+    text: subject
+    html: '<h1>#{subject}</h1>'
 }
 
 console.log await transporter.sendMail(mail)
