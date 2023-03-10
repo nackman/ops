@@ -1,6 +1,7 @@
 #!/usr/bin/env coffee
 
 > dotenv
+  path > join
   @alicloud/tea-util > RuntimeOptions
   @alicloud/openapi-client:OpenApi > Config
   @u7/uridir

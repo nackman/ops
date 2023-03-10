@@ -8,3 +8,4 @@ if [ ! -d "node_modules" ]; then
   pnpm i
 fi
 
+./ssl.coffee
