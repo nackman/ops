@@ -8,4 +8,5 @@ if [ ! -d "node_modules" ]; then
   pnpm i
 fi
 
-./ssl.coffee
+bun run cep -- -c src -o lib
+./lib/ssl.js
