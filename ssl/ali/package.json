@@ -5,6 +5,8 @@
     "@alicloud/cdn20180510": "^1.2.4",
     "@alicloud/openapi-client": "^0.4.5",
     "@alicloud/tea-util": "^1.4.5",
-    "@u7/read": "^0.0.6"
+    "@u7/read": "^0.0.6",
+    "@u7/uridir": "^0.0.2",
+    "dotenv": "^16.0.3"
   }
 }

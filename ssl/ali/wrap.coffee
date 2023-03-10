@@ -1,7 +1,12 @@
 #!/usr/bin/env coffee
 
-> @alicloud/tea-util > RuntimeOptions
+> dotenv
+  @alicloud/tea-util > RuntimeOptions
   @alicloud/openapi-client:OpenApi > Config
+  @u7/uridir
+
+PWD = uridir(import.meta)
+dotenv.config(path:join(PWD,'ali.env'))
 
 {
   ALIYUN_accessKeyId: accessKeyId

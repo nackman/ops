@@ -6,6 +6,8 @@ specifiers:
   '@alicloud/openapi-client': ^0.4.5
   '@alicloud/tea-util': ^1.4.5
   '@u7/read': ^0.0.6
+  '@u7/uridir': ^0.0.2
+  dotenv: ^16.0.3
 
 dependencies:
   '@alicloud/cas20180713': 1.0.0
@@ -13,6 +15,8 @@ dependencies:
   '@alicloud/openapi-client': 0.4.5
   '@alicloud/tea-util': 1.4.5
   '@u7/read': 0.0.6
+  '@u7/uridir': 0.0.2
+  dotenv: 16.0.3
 
 packages:
 
@@ -163,6 +167,10 @@ packages:
     resolution: {integrity: sha512-j4uIfSfkZDZ+6zupIbpB+6TwIkOb7OsC5gYAsVYpJu0AXCMoS34MpRWaW122hNIK1TqlpJcmufVHp12O2H8KHw==}
     dev: false
 
+  /@u7/uridir/0.0.2:
+    resolution: {integrity: sha512-tyuFdhcxmCxE/iYpNknjc37TkffJLxVnvW6wCJyJ/CBBBeWjEe1FWtsORK4jyR+pI0E8UF0iP+9Hz3T3Y7pCtw==}
+    dev: false
+
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -173,6 +181,11 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+    dev: false
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
     dev: false
 
   /httpx/2.2.7:

@@ -2,7 +2,7 @@
 
 > @alicloud/cas20180713:_CAS
   @alicloud/cdn20180510:_CDN
-  @iuser/read
+  @u7/read
   fs > readdirSync existsSync
   path > join
   ./pager
@@ -13,21 +13,22 @@ CDN = wrap _CDN, 'cdn'
 TODAY = new Date().toISOString()
 MONTH = '_'+TODAY[..6]
 
-
 iter = (exist)->
   acme = '/mnt/www/.acme.sh'
   for i from readdirSync acme, withFileTypes:true
     if i.isDirectory()
       {name} = i
-      if name.includes('.') and (not exist.has name)
-        dir = join acme, name
-        fullchain = join dir, 'fullchain.cer'
-        if existsSync fullchain
-          yield {
-            name
-            cert:read fullchain
-            key:read join dir,name+'.key'
-          }
+      if name.includes('.')
+        console.log '>>name',name
+        if not exist.has name
+          dir = join acme, name
+          fullchain = join dir, 'fullchain.cer'
+          if existsSync fullchain
+            yield {
+              name
+              cert:read fullchain
+              key:read join dir,name+'.key'
+            }
   return
 
 sslLs = pager(
@@ -87,6 +88,7 @@ sslMap = (hostLi)=>
     if li.length
       nm = name+MONTH
       i.name = nm
+      console.log {i,name,nm}
       await upload i
       await bindLi name, nm
   return
@@ -95,7 +97,9 @@ do =>
   li = []
   for await {domainStatus,domainName} from cdnLs()
     if domainStatus == 'online'
+      console.log domainName
       li.push domainName
+
   await sslMap (host)=>
     r = []
     for i from li
