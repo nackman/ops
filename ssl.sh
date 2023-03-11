@@ -41,10 +41,6 @@ if ! grep -q "DOH_USE" $ACME_DIR_ENV; then
 echo "export DOH_USE=3" >> $ACME_DIR_ENV
 fi
 
-# if [ ! -f "$ACME_DIR_ENV" ]; then
-#   (cat; echo "export DOH_USE=3") > $ACME_DIR_ENV
-# fi
-
 if [ ! -x "$acme" ]; then
   if ! curl -I --connect-timeout 1 -m 3 -s https://t.co > /dev/null ;then
     GHPROXY=https://ghproxy.com
