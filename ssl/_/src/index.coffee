@@ -1,7 +1,10 @@
 #!/usr/bin/env coffee
 
 > path > join
-  fs > readdirSync existsSync
+  fs > readdirSync existsSync statSync
+  @u7/read
+
+TODAY = new Date
 
 < ACME = '/mnt/www/.acme.sh'
 
@@ -26,3 +29,21 @@ sslIter = (exist)->
       host = i
     exist.set host,i
   exist
+
+< certKey = (dir, host)=>
+  key = join ACME,dir,host+'.key'
+  stats = statSync(key)
+  mtime = new Date(stats.mtime)
+
+  day = (TODAY - mtime)/(86e6)
+  if day >= 90
+    console.error "TODO : #{dir} 证书过期了"
+    return
+
+  name = host+"_"+mtime.toISOString().slice(0,10)
+  [
+    name
+    read fullchainFp dir
+    read key
+  ]
+

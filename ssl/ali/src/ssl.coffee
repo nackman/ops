@@ -4,16 +4,14 @@
   @alicloud/cdn20180510:_CDN
   @u7/read
   @u7/default:
-  fs > statSync
   path > join
   ./pager
   ./wrap
-  _ > ACME fullchainFp hostDir
+  _ > ACME hostDir certKey
 
 CAS = wrap _CAS, 'cas'
 CDN = wrap _CDN, 'cdn'
-TODAY = new Date().toISOString()
-MONTH = '_'+TODAY[..6]
+TODAY = new Date
 
 cdnLs = =>
   for await {domainStatus,domainName} from pager(
@@ -40,25 +38,18 @@ set = (domainName, certName)=>
     certType: 'upload'
   }
 
-TODAY = new Date
 
 upload = (host, dir, host_li)=>
-  key = join ACME,dir,host+'.key'
-  stats = statSync(key)
-  mtime = new Date(stats.mtime)
-
-  day = (TODAY - mtime)/(86e6)
-  if day >= 90
-    console.error "TODO : #{dir} 证书过期了"
+  r = certKey dir, host
+  if not r
     return
 
-  name = host+"_"+mtime.toISOString().slice(0,10)
-
+  [name, cert, key] = r
   try
     await CAS.createUserCertificate {
       name
-      cert:read fullchainFp dir
-      key:read key
+      cert
+      key
     }
   catch err
     console.error host,'上传证书失败 >',err.data.Message
