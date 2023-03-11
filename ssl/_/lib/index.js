@@ -1,5 +1,5 @@
 #!/usr/bin/env -S node --loader=@u6x/jsext --trace-uncaught --expose-gc --unhandled-rejections=strict --experimental-import-meta-resolve
-var TODAY, sslIter;
+var TODAY, sslIter, uploadSet;
 
 import {
   join
@@ -12,6 +12,8 @@ import {
 } from 'fs';
 
 import read from '@u7/read';
+
+import '@u7/default';
 
 TODAY = new Date();
 
@@ -65,4 +67,48 @@ export const certKey = (dir, host) => {
   }
   name = host + "_" + mtime.toISOString().slice(0, 10);
   return [name, read(fullchainFp(dir)), read(key)];
+};
+
+uploadSet = async(upload, set, host, dir, host_li) => {
+  var name, r;
+  r = certKey(dir, host);
+  if (!r) {
+    return;
+  }
+  upload(...r);
+  name = r[0];
+  await Promise.all(host_li.map((i) => {
+    return set(i, name);
+  }));
+};
+
+export const bind = async(cdnLs, upload, set) => {
+  var add, dir, domain_dir, host_dir, host_li, i, name, ref, x;
+  host_dir = hostDir();
+  domain_dir = new Map();
+  add = () => {
+    if (host_dir.has(name)) {
+      domain_dir.default(name, () => {
+        return [];
+      }).push(i);
+      return true;
+    }
+  };
+  for (i of cdnLs) {
+    if (i.startsWith('.')) {
+      name = i.slice(1);
+    } else {
+      name = i;
+    }
+    if (!add()) {
+      name = name.slice(name.indexOf('.') + 1);
+      add();
+    }
+  }
+  ref = domain_dir.entries();
+  for (x of ref) {
+    [name, host_li] = x;
+    dir = host_dir.get(name);
+    await uploadSet(upload, set, name, dir, host_li);
+  }
 };

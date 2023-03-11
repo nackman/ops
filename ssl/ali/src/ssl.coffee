@@ -7,7 +7,7 @@
   path > join
   ./pager
   ./wrap
-  _ > hostDir certKey
+  _ > bind
 
 CAS = wrap _CAS, 'cas'
 CDN = wrap _CDN, 'cdn'
@@ -38,58 +38,6 @@ set = (domainName, certName)=>
   }
 
 
-upload = (host, dir, host_li)=>
-  r = certKey dir, host
-  if not r
-    return
-
-  [name, cert, key] = r
-  try
-    await CAS.createUserCertificate {
-      name
-      cert
-      key
-    }
-  catch err
-    console.error host,'上传证书失败 >',err.data.Message
-
-  await Promise.all(
-    host_li.map(
-      (i)=>
-        set(i, name)
-    )
-  )
-  return
-
-bind = =>
-  host_dir = hostDir()
-  console.log {host_dir}
-  domain_dir = new Map()
-
-  add = ()=>
-    if host_dir.has name
-      domain_dir.default(name,=>[]).push i
-      return true
-    return
-
-  for i from await cdnLs()
-    if i.startsWith('.')
-      name = i.slice(1)
-    else
-      name = i
-
-    if not add()
-      name = name.slice(name.indexOf('.')+1)
-      add()
-
-  for [name, host_li] from domain_dir.entries()
-    dir = host_dir.get name
-    await upload(
-      name
-      dir
-      host_li
-    )
-  return
 
 sslRm = =>
   m = new Map
@@ -109,7 +57,20 @@ sslRm = =>
   return
 
 do =>
-  await bind()
+  await bind(
+    await cdnLs()
+    (name, cert, key)=>
+      try
+        await CAS.createUserCertificate {
+          name
+          cert
+          key
+        }
+      catch err
+        console.error host,'上传证书失败 >',err.data.Message
+      return
+    set
+  )
   await sslRm()
   process.exit()
   return

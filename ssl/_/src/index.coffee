@@ -3,6 +3,7 @@
 > path > join
   fs > readdirSync existsSync statSync
   @u7/read
+  @u7/default:
 
 TODAY = new Date
 
@@ -47,3 +48,48 @@ sslIter = (exist)->
     read key
   ]
 
+uploadSet = (upload, set, host, dir, host_li)=>
+  r = certKey dir, host
+  if not r
+    return
+
+  upload(...r)
+  name = r[0]
+  await Promise.all(
+    host_li.map(
+      (i)=>
+        set(i, name)
+    )
+  )
+  return
+
+< bind = (cdnLs, upload, set)=>
+  host_dir = hostDir()
+  domain_dir = new Map()
+
+  add = ()=>
+    if host_dir.has name
+      domain_dir.default(name,=>[]).push i
+      return true
+    return
+
+  for i from cdnLs
+    if i.startsWith('.')
+      name = i.slice(1)
+    else
+      name = i
+
+    if not add()
+      name = name.slice(name.indexOf('.')+1)
+      add()
+
+  for [name, host_li] from domain_dir.entries()
+    dir = host_dir.get name
+    await uploadSet(
+      upload
+      set
+      name
+      dir
+      host_li
+    )
+  return
