@@ -8,9 +8,12 @@
 DIR = dirname uridir(import.meta)
 dotenv.config(path:join(DIR,'env'))
 
-for i from (
-  (await doge(
-    'cdn/domain/list.json'
-  )).domains
-)
-  console.log i
+cdnLs = =>
+  for i from (
+    (await doge(
+      'cdn/domain/list.json'
+    )).domains
+  )
+    i.name
+
+console.log await cdnLs()
