@@ -37,8 +37,6 @@ set = (domainName, certName)=>
     certType: 'upload'
   }
 
-
-
 sslRm = =>
   m = new Map
   for await i from pager(
@@ -59,7 +57,7 @@ sslRm = =>
 do =>
   await bind(
     await cdnLs()
-    (name, cert, key)=>
+    (host, name, cert, key)=>
       try
         await CAS.createUserCertificate {
           name

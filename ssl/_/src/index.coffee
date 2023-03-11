@@ -53,7 +53,7 @@ uploadSet = (upload, set, host, dir, host_li)=>
   if not r
     return
 
-  upload(...r)
+  upload(host, ...r)
   name = r[0]
   await Promise.all(
     host_li.map(
