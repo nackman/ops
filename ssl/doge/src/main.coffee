@@ -45,7 +45,7 @@ do =>
       return
 
   )
-  for i from (await api('cert/list.json'))
+  for i from (await api('cert/list.json')).certs
     if not i.domainCount
       await api(
         'cert/delete.json'
