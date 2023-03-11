@@ -8,7 +8,5 @@ if [ ! -d "node_modules" ]; then
   pnpm i
 fi
 
-$(dirname $DIR)/init.sh $DIR
-
 bun run cep -- -c src -o lib
-./lib/ssl.js
+./lib/index.js

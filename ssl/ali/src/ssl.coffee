@@ -4,38 +4,16 @@
   @alicloud/cdn20180510:_CDN
   @u7/read
   @u7/default:
-  fs > readdirSync existsSync statSync
+  fs > statSync
   path > join
   ./pager
   ./wrap
+  _ > ACME fullchainFp hostDir
 
-ACME = '/mnt/www/.acme.sh'
 CAS = wrap _CAS, 'cas'
 CDN = wrap _CDN, 'cdn'
 TODAY = new Date().toISOString()
 MONTH = '_'+TODAY[..6]
-
-fullchainFp = (name)=>
-  join ACME, name, 'fullchain.cer'
-
-sslIter = (exist)->
-  for i from readdirSync ACME, withFileTypes:true
-    if i.isDirectory()
-      {name} = i
-      if name.includes('.')
-        if existsSync fullchainFp name
-          yield name
-  return
-
-hostDir = =>
-  exist = new Map()
-  for i from sslIter()
-    if i.endsWith '_ecc'
-      host = i.slice(0,-4)
-    else
-      host = i
-    exist.set host,i
-  exist
 
 cdnLs = =>
   for await {domainStatus,domainName} from pager(
