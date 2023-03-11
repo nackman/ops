@@ -72,14 +72,16 @@ gen() {
     if [ "$time_diff" -lt 86400 ]; then
       echo "$fullchain updated today"
     else
-      $acme --dnssleep 10 \
-        --force --renew -d $HOST -d *.$HOST --log --reloadcmd "$reload"
+      $acme --dnssleep 20 \
+        --force --renew \
+        -d $HOST -d *.$HOST --log --reloadcmd "$reload"
     fi
   else
     echo "refresh $HOST"
     $acme \
       --days 30 --issue --dns dns_$DNS -d $HOST -d *.$HOST \
-      --force --dnssleep 10 --log --reloadcmd "$reload"
+      --force --dnssleep 20 \
+      --log --reloadcmd "$reload"
   fi
 }
 
