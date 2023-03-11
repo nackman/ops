@@ -7,11 +7,10 @@
   path > join
   ./pager
   ./wrap
-  _ > ACME hostDir certKey
+  _ > hostDir certKey
 
 CAS = wrap _CAS, 'cas'
 CDN = wrap _CDN, 'cdn'
-TODAY = new Date
 
 cdnLs = =>
   for await {domainStatus,domainName} from pager(
@@ -64,7 +63,7 @@ upload = (host, dir, host_li)=>
 
 bind = =>
   host_dir = hostDir()
-
+  console.log {host_dir}
   domain_dir = new Map()
 
   add = ()=>
