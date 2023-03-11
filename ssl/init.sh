@@ -9,7 +9,7 @@ init() {
     if ! [ -x "$(command -v pnpm)" ]; then
       npm install -g pnpm
     fi
-    cd $DIR/$1
+    cd $1
     pnpm i
     cd $DIR
   fi
