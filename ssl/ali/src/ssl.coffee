@@ -64,7 +64,7 @@ do =>
           key
         }
       catch err
-        console.error host,'上传证书失败 >',err.data.Message
+        console.error host,'上传证书失败 >',err.data
       return
     set
   )
