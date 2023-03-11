@@ -11,8 +11,6 @@ if [ ! -f "$conf" ]; then
   cp .conf.sh $conf
 fi
 
-source $conf
-
 if [ ! $DNS ]; then
   echo -e "\nPLEASE EDIT :\n$conf\n"
   exit 1
@@ -24,6 +22,8 @@ else
   echo "USAGE : $0 example.com"
   exit 1
 fi
+
+source $conf
 
 set -ex
 
