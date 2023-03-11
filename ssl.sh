@@ -30,7 +30,7 @@ set -ex
 
 export HOME=/mnt/www
 export LE_WORKING_DIR=$HOME/.acme.sh
-
+export DEBUG=1
 acme=$HOME/.acme.sh/acme.sh
 
 if [ ! -x "$acme" ]; then
