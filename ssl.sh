@@ -31,7 +31,19 @@ set -ex
 export HOME=/mnt/www
 export LE_WORKING_DIR=$HOME/.acme.sh
 export DEBUG=1
-acme=$HOME/.acme.sh/acme.sh
+
+ACME_DIR=$HOME/.acme.sh
+acme=$ACME_DIR/acme.sh
+
+ACME_DIR_ENV=$ACME_DIR/acme.sh.env
+
+if ! grep -q "DOH_USE" $ACME_DIR_ENV; then
+echo "export DOH_USE=3" >> $ACME_DIR_ENV
+fi
+
+# if [ ! -f "$ACME_DIR_ENV" ]; then
+#   (cat; echo "export DOH_USE=3") > $ACME_DIR_ENV
+# fi
 
 if [ ! -x "$acme" ]; then
   if ! curl -I --connect-timeout 1 -m 3 -s https://t.co > /dev/null ;then
