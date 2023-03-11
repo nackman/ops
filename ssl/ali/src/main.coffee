@@ -55,7 +55,7 @@ sslRm = =>
 
 do =>
   await bind(
-    await cdnLs()
+    cdnLs
     (host, name, cert, key)=>
       try
         await CAS.createUserCertificate {

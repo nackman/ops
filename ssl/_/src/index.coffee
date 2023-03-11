@@ -53,13 +53,13 @@ uploadSet = (upload, set, host, dir, host_li)=>
   if not r
     return
 
-  await upload(host, ...r)
+  v = await upload(host, ...r)
   name = r[0]
   await Promise.all(
     host_li.map(
       (i)=>
         console.log i, '→', name
-        set(i, name)
+        set(i, name, v)
     )
   )
   return
@@ -74,7 +74,7 @@ uploadSet = (upload, set, host, dir, host_li)=>
       return true
     return
 
-  for i from cdnLs
+  for i from await cdnLs()
     if i.startsWith('.')
       name = i.slice(1)
     else

@@ -70,21 +70,21 @@ export const certKey = (dir, host) => {
 };
 
 uploadSet = async(upload, set, host, dir, host_li) => {
-  var name, r;
+  var name, r, v;
   r = certKey(dir, host);
   if (!r) {
     return;
   }
-  await upload(host, ...r);
+  v = (await upload(host, ...r));
   name = r[0];
   await Promise.all(host_li.map((i) => {
     console.log(i, '→', name);
-    return set(i, name);
+    return set(i, name, v);
   }));
 };
 
 export const bind = async(cdnLs, upload, set) => {
-  var add, dir, domain_dir, host_dir, host_li, i, name, ref, x;
+  var add, dir, domain_dir, host_dir, host_li, i, name, ref, ref1, x;
   host_dir = hostDir();
   domain_dir = new Map();
   add = () => {
@@ -95,7 +95,8 @@ export const bind = async(cdnLs, upload, set) => {
       return true;
     }
   };
-  for (i of cdnLs) {
+  ref = (await cdnLs());
+  for (i of ref) {
     if (i.startsWith('.')) {
       name = i.slice(1);
     } else {
@@ -106,8 +107,8 @@ export const bind = async(cdnLs, upload, set) => {
       add();
     }
   }
-  ref = domain_dir.entries();
-  for (x of ref) {
+  ref1 = domain_dir.entries();
+  for (x of ref1) {
     [name, host_li] = x;
     dir = host_dir.get(name);
     await uploadSet(upload, set, name, dir, host_li);
