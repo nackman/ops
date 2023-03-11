@@ -3,6 +3,8 @@
 DIR=$(dirname $(realpath "$0"))
 cd $DIR
 
+HOST=$1
+
 CONF=$(./env.sh)
 
 conf=$CONF/conf.sh
@@ -11,28 +13,33 @@ if [ ! -f "$conf" ]; then
   cp .conf.sh $conf
 fi
 
+source $conf
+
 if [ ! $DNS ]; then
   echo -e "\nPLEASE EDIT :\n$conf\n"
   exit 1
 fi
 
-if [ -v 1 ]; then
-  HOST=$1
-else
+if [ -z "$HOST" ]; then
   echo "USAGE : $0 example.com"
   exit 1
 fi
 
-source $conf
-
 set -ex
 
+if ! curl -I --connect-timeout 1 -m 3 -s https://t.co > /dev/null ;then
+  GHPROXY=https://ghproxy.com
+fi
+
+
 export HOME=/mnt/www
+export LE_WORKING_DIR=$HOME/.acme.sh
 
 acme=$HOME/.acme.sh/acme.sh
 
 if [ ! -x "$acme" ]; then
-  curl https://ghproxy.com/https://raw.githubusercontent.com/usrtax/get.acme.sh/master/index.html | sh -s email=$MAIL
+  cd /tmp
+  curl $GHPROXY/https://raw.githubusercontent.com/usrtax/acme.sh/master/acme.sh | sh -s -- --install-online --email $MAIL
   $acme --upgrade --auto-upgrade
 fi
 
