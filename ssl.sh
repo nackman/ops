@@ -27,10 +27,6 @@ fi
 
 set -ex
 
-if ! curl -I --connect-timeout 1 -m 3 -s https://t.co > /dev/null ;then
-  GHPROXY=https://ghproxy.com
-fi
-
 
 export HOME=/mnt/www
 export LE_WORKING_DIR=$HOME/.acme.sh
@@ -38,6 +34,9 @@ export LE_WORKING_DIR=$HOME/.acme.sh
 acme=$HOME/.acme.sh/acme.sh
 
 if [ ! -x "$acme" ]; then
+  if ! curl -I --connect-timeout 1 -m 3 -s https://t.co > /dev/null ;then
+    GHPROXY=https://ghproxy.com
+  fi
   cd /tmp
   curl $GHPROXY/https://raw.githubusercontent.com/usrtax/acme.sh/master/acme.sh | sh -s -- --install-online --email $MAIL
   $acme --upgrade --auto-upgrade
