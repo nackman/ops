@@ -38,7 +38,7 @@ acme=$ACME_DIR/acme.sh
 ACME_DIR_ENV=$ACME_DIR/acme.sh.env
 
 if ! grep -q "DOH_USE" $ACME_DIR_ENV; then
-echo "export DOH_USE=3" >> $ACME_DIR_ENV
+echo "export DOH_USE=4" >> $ACME_DIR_ENV
 fi
 
 if [ ! -x "$acme" ]; then
