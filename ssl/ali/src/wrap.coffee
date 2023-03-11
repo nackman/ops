@@ -7,7 +7,7 @@
   @u7/uridir
 
 DIR = dirname uridir(import.meta)
-dotenv.config(path:join(DIR,'ali.env'))
+dotenv.config(path:join(DIR,'env'))
 
 {
   ALIYUN_accessKeyId: accessKeyId

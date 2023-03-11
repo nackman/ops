@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@u6x/jsext": "^0.0.27",
+    "@u7/default": "^0.0.2",
+    "@u7/doge": "^0.0.10",
+    "@u7/read": "^0.0.6",
+    "@u7/uridir": "^0.0.2",
+    "coffee_plus": "^0.0.55",
+    "coffeescript": "^2.7.0",
+    "dotenv": "^16.0.3"
+  }
+}
