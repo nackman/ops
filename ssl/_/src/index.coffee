@@ -58,6 +58,7 @@ uploadSet = (upload, set, host, dir, host_li)=>
   await Promise.all(
     host_li.map(
       (i)=>
+        console.log i, '→', name
         set(i, name)
     )
   )

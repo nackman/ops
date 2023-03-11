@@ -78,6 +78,7 @@ uploadSet = async(upload, set, host, dir, host_li) => {
   upload(host, ...r);
   name = r[0];
   await Promise.all(host_li.map((i) => {
+    console.log(i, '→', name);
     return set(i, name);
   }));
 };

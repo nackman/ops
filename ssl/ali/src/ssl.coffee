@@ -29,7 +29,6 @@ cdnLs = =>
 
 
 set = (domainName, certName)=>
-  console.log certName, '→', domainName
   CDN.setDomainServerCertificate {
     domainName
     certName
