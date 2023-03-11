@@ -11,4 +11,4 @@ fi
 $(dirname $DIR)/init.sh $DIR
 
 bun run cep -- -c src -o lib
-./lib/ssl.js
+./lib/main.js

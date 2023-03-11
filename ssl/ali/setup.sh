@@ -6,7 +6,7 @@ set -ex
 
 ./run.sh
 
-exe=lib/ssl.js
+exe=lib/main.js
 
 job="4 3 */10 * * eval \$(rtx env) && cd $DIR && timeout 1h $exe > /var/log/crontab.ssl.log 2>&1"
 
