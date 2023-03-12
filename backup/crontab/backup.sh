@@ -7,6 +7,8 @@ set -ex
 BACKUP=/mnt/backup/crontab
 mkdir -p $BACKUP
 
-crontab -l >$BACKUP/$(hostname).txt
+txt=$(hostname).txt
+crontab -l >$BACKUP/$txt
 cd $BACKUP
+git add $txt
 gitsync
