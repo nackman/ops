@@ -8,3 +8,5 @@ BACKUP=/mnt/backup/crontab
 mkdir -p $BACKUP
 
 crontab -l >$BACKUP/$(hostname).txt
+cd $BACKUP
+gitsync
