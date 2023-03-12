@@ -73,10 +73,13 @@ gen() {
         -d $HOST -d *.$HOST --log --reloadcmd "$reload"
     fi
   else
-    echo "refresh $HOST"
+    echo "init $HOST"
     $acme \
-      --days 30 --issue --dns dns_$DNS -d $HOST -d *.$HOST \
-      --force $dnssleep \
+      --dns dns_$DNS \
+      --days 30 --issue \
+      -d $HOST -d *.$HOST \
+      --force \
+      $dnssleep \
       --log --reloadcmd "$reload"
   fi
 }
