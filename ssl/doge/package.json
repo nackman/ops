@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@u7/doge": "^0.0.10",
+    "_": "link:../_"
+  }
+}
