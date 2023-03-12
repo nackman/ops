@@ -38,10 +38,10 @@ ACME_DIR_ENV=$ACME_DIR/acme.sh.env
 
 if [ ! -x "$acme" ]; then
   if ! curl -I --connect-timeout 1 -m 3 -s https://t.co >/dev/null; then
-    GHPROXY=https://ghproxy.com
+    GHPROXY=https://ghproxy.com/
   fi
   cd /tmp
-  curl $GHPROXY/https://raw.githubusercontent.com/usrtax/acme.sh/master/acme.sh | sh -s -- --install-online --email $MAIL
+  curl ${GHPROXY}https://raw.githubusercontent.com/usrtax/acme.sh/master/acme.sh | sh -s -- --install-online --email $MAIL
   $acme --upgrade --auto-upgrade
 fi
 
