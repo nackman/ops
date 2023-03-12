@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@u7/node-loader": "^0.0.49",
+    "@u7/read": "^0.0.6",
+    "zx": "^7.2.0"
+  }
+}

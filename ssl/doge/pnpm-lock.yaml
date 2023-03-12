@@ -1,0 +1,21 @@
+lockfileVersion: 5.4
+
+specifiers:
+  '@u7/doge': ^0.0.10
+  _: link:../_
+
+dependencies:
+  '@u7/doge': 0.0.10
+  _: link:../_
+
+packages:
+
+  /@u7/doge/0.0.10:
+    resolution: {integrity: sha512-pEZ2RAV3/izTFJGF5G/rm3Idamc7LYPIS7ABMMCESJBCkI+qCbmu9tvms4/4wh2vJyswHACrE3dFtsitgJuZyw==}
+    dependencies:
+      '@u7/utf8': 0.0.4
+    dev: false
+
+  /@u7/utf8/0.0.4:
+    resolution: {integrity: sha512-gJ5ipK1A6enJAPRAkOvr2WGuYMCki+EVp07mqXeViQo7vSEpWbIKnTx07a3aTb3urFBQWdV1gEKO9f1ppRWENw==}
+    dev: false
