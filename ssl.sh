@@ -54,7 +54,7 @@ if [ ! -f "$reload" ]; then
 fi
 
 fullchain=$HOME/.acme.sh/${HOST}_ecc/fullchain.cer
-dnssleep="--dnssleep 60"
+dnssleep="--dnssleep 25"
 gen() {
   if [ -f "$fullchain" ]; then
     echo "update $HOST"
