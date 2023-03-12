@@ -27,27 +27,26 @@ fi
 
 set -ex
 
-
 export HOME=/mnt/www
 export LE_WORKING_DIR=$HOME/.acme.sh
-export DEBUG=1
+# export DEBUG=1
 
 ACME_DIR=$HOME/.acme.sh
 acme=$ACME_DIR/acme.sh
 
 ACME_DIR_ENV=$ACME_DIR/acme.sh.env
 
-if ! grep -q "DOH_USE" $ACME_DIR_ENV; then
-echo "export DOH_USE=4" >> $ACME_DIR_ENV
-fi
-
 if [ ! -x "$acme" ]; then
-  if ! curl -I --connect-timeout 1 -m 3 -s https://t.co > /dev/null ;then
+  if ! curl -I --connect-timeout 1 -m 3 -s https://t.co >/dev/null; then
     GHPROXY=https://ghproxy.com
   fi
   cd /tmp
   curl $GHPROXY/https://raw.githubusercontent.com/usrtax/acme.sh/master/acme.sh | sh -s -- --install-online --email $MAIL
   $acme --upgrade --auto-upgrade
+fi
+
+if ! grep -q "DOH_USE" $ACME_DIR_ENV; then
+  echo "export DOH_USE=4" >>$ACME_DIR_ENV
 fi
 
 mkdir -p $CONF/reload
