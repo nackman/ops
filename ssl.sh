@@ -54,6 +54,7 @@ if [ ! -f "$reload" ]; then
 fi
 
 fullchain=$HOME/.acme.sh/${HOST}_ecc/fullchain.cer
+dnssleep="--dnssleep 25"
 gen() {
   if [ -f "$fullchain" ]; then
     echo "update $HOST"
@@ -67,7 +68,7 @@ gen() {
     if [ "$time_diff" -lt 86400 ]; then
       echo "$fullchain updated today"
     else
-      $acme --dnssleep 20 \
+      $acme $dnssleep \
         --force --renew \
         -d $HOST -d *.$HOST --log --reloadcmd "$reload"
     fi
@@ -75,7 +76,7 @@ gen() {
     echo "refresh $HOST"
     $acme \
       --days 30 --issue --dns dns_$DNS -d $HOST -d *.$HOST \
-      --force --dnssleep 20 \
+      --force $dnssleep \
       --log --reloadcmd "$reload"
   fi
 }
