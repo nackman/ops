@@ -3,24 +3,24 @@
 DIR=$(dirname $(realpath "$0"))
 cd $DIR
 
+HOST=$1
+
 CONF=$(./env.sh)
 
 conf=$CONF/conf.sh
 
 if [ ! -f "$conf" ]; then
-  cp conf.example.sh $conf
+  cp .conf.sh $conf
 fi
 
 source $conf
 
-if [[ -z $DNS ]]; then
-  echo -e "please edit $conf"
+if [ ! $DNS ]; then
+  echo -e "\nPLEASE EDIT :\n$conf\n"
   exit 1
 fi
 
-if [ -v 1 ]; then
-  HOST=$1
-else
+if [ -z "$HOST" ]; then
   echo "USAGE : $0 example.com"
   exit 1
 fi
@@ -28,11 +28,20 @@ fi
 set -ex
 
 export HOME=/mnt/www
+export LE_WORKING_DIR=$HOME/.acme.sh
+# export DEBUG=1
 
-acme=$HOME/.acme.sh/acme.sh
+ACME_DIR=$HOME/.acme.sh
+acme=$ACME_DIR/acme.sh
+
+ACME_DIR_ENV=$ACME_DIR/acme.sh.env
 
 if [ ! -x "$acme" ]; then
-  curl https://ghproxy.com/https://raw.githubusercontent.com/usrtax/get.acme.sh/master/index.html | sh -s email=$MAIL
+  if ! curl -I --connect-timeout 1 -m 3 -s https://t.co >/dev/null; then
+    GHPROXY=https://ghproxy.com
+  fi
+  cd /tmp
+  curl $GHPROXY/https://raw.githubusercontent.com/usrtax/acme.sh/master/acme.sh | sh -s -- --install-online --email $MAIL
   $acme --upgrade --auto-upgrade
 fi
 
@@ -45,6 +54,7 @@ if [ ! -f "$reload" ]; then
 fi
 
 fullchain=$HOME/.acme.sh/${HOST}_ecc/fullchain.cer
+dnssleep="--dnssleep 25"
 gen() {
   if [ -f "$fullchain" ]; then
     echo "update $HOST"
@@ -58,14 +68,28 @@ gen() {
     if [ "$time_diff" -lt 86400 ]; then
       echo "$fullchain updated today"
     else
-      $acme --force --renew -d $HOST -d *.$HOST --log --reloadcmd "$reload"
+      $acme $dnssleep \
+        --force --renew \
+        -d $HOST -d *.$HOST --log --reloadcmd "$reload"
     fi
   else
     echo "refresh $HOST"
     $acme \
       --days 30 --issue --dns dns_$DNS -d $HOST -d *.$HOST \
-      --force --log --reloadcmd "$reload"
+      --force $dnssleep \
+      --log --reloadcmd "$reload"
   fi
 }
 
 gen || gen
+
+if ! [ -x "$(command -v setfacl)" ]; then
+  apt-get install -y acl
+fi
+
+can_read() {
+  id -u $1 &>/dev/null && setfacl -R -m u:$1:rX $LE_WORKING_DIR
+}
+
+can_read www-data
+can_read mail
