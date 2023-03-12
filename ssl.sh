@@ -83,4 +83,13 @@ gen() {
 
 gen || gen
 
-chown -R www-data:www-data $LE_WORKING_DIR
+if ! [ -x "$(command -v setfacl)" ]; then
+  apt-get install -y acl
+fi
+
+can_read() {
+  id -u $1 &>/dev/null && setfacl -R -m u:$1:rX $LE_WORKING_DIR
+}
+
+can_read www-data
+can_read mail
