@@ -45,10 +45,6 @@ if [ ! -x "$acme" ]; then
   $acme --upgrade --auto-upgrade
 fi
 
-if ! grep -q "DOH_USE" $ACME_DIR_ENV; then
-  echo "export DOH_USE=4" >>$ACME_DIR_ENV
-fi
-
 mkdir -p $CONF/reload
 
 reload="$CONF/reload/$HOST.sh"
