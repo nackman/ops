@@ -82,3 +82,5 @@ gen() {
 }
 
 gen || gen
+
+chown -R www-data:www-data $LE_WORKING_DIR
