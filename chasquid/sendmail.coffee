@@ -2,10 +2,15 @@
 
 > nodemailer
 
-{user,to,pass,subject} = process.env
+{user,to,pass,smtp,subject} = process.env
+
+if not smtp
+  smtp = 'smtp.'+user.split('@').pop()
+
+console.log 'smtp ', smtp
 
 transporter = nodemailer.createTransport({
-    host: 'smtp.user.tax'
+    host: smtp
     debug: true
     logger: true
     secure: true
