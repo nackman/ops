@@ -2,7 +2,6 @@
 
 > @alicloud/cas20180713:_CAS
   @alicloud/cdn20180510:_CDN
-  @u7/read
   @u7/default:
   path > join
   ./pager
