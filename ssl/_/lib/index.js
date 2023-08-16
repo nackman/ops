@@ -56,9 +56,10 @@ export const hostDir = () => {
 };
 
 export const certKey = (dir, host) => {
-  var day, key, mtime, name, stats;
+  var day, fullfp, key, mtime, name, stats;
+  fullfp = fullchainFp(dir);
   key = join(ACME, dir, host + '.key');
-  stats = statSync(key);
+  stats = statSync(fullfp);
   mtime = new Date(stats.mtime);
   day = (TODAY - mtime) / 86e6;
   if (day >= 90) {
@@ -66,7 +67,7 @@ export const certKey = (dir, host) => {
     return;
   }
   name = host + "_" + mtime.toISOString().slice(0, 10);
-  return [name, read(fullchainFp(dir)), read(key)];
+  return [name, read(fullfp), read(key)];
 };
 
 uploadSet = async(upload, set, host, dir, host_li) => {

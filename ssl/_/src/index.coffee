@@ -32,8 +32,9 @@ sslIter = (exist)->
   exist
 
 < certKey = (dir, host)=>
+  fullfp = fullchainFp dir
   key = join ACME,dir,host+'.key'
-  stats = statSync(key)
+  stats = statSync(fullfp)
   mtime = new Date(stats.mtime)
 
   day = (TODAY - mtime)/(86e6)
@@ -44,7 +45,7 @@ sslIter = (exist)->
   name = host+"_"+mtime.toISOString().slice(0,10)
   [
     name
-    read fullchainFp dir
+    read fullfp
     read key
   ]
 
