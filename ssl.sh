@@ -35,11 +35,16 @@ ACME_DIR=$HOME/.acme.sh
 acme=$ACME_DIR/acme.sh
 
 ACME_DIR_ENV=$ACME_DIR/acme.sh.env
+MAIL=zsp@xvc.com
 
 if [ ! -x "$acme" ]; then
-  curl https://get.acme.sh | sh -s email=zsp@xvc.com
-
-  $acme --upgrade --auto-upgrade
+cd /tmp
+rm -rf acme.sh
+git clone --depth=1 https://gitee.com/neilpang/acme.sh.git
+cd acme.sh
+./acme.sh --install -m $MAIL
+/mnt/www/.acme.sh/acme.sh --register-account -m $MAIL
+$acme --upgrade --auto-upgrade
 fi
 
 mkdir -p $CONF/reload
