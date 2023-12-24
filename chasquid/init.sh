@@ -39,6 +39,7 @@ setfacl -R -m u:$user:rX /mnt/www/.acme.sh
 
 for i in dkimsign dkimverify dkimkeygen; do
   if ! [ -x "$(command -v $i)" ]; then
+    go get github.com/driusan/dkim/cmd/$i@latest
     go install github.com/driusan/dkim/cmd/$i@latest
   fi
 done
