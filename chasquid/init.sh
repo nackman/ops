@@ -38,11 +38,10 @@ getent group $user >/dev/null || groupadd $user
 setfacl -R -m u:$user:rX /mnt/www/.acme.sh
 
 for i in dkimsign dkimverify dkimkeygen; do
-  if ! [ -x "$(command -v $i)" ]; then
-    go get github.com/driusan/dkim/cmd/$i@latest
-    go install github.com/driusan/dkim/cmd/$i@latest
-  fi
+    go get github.com/driusan/dkim/cmd/$i
+    go install github.com/driusan/dkim/cmd/$i
 done
+sudo cp ~/go/bin/{dkimsign,dkimverify,dkimkeygen} /usr/local/bin
 
 CONF=$(../env.sh)
 
